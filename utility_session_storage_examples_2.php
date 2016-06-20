@@ -12,6 +12,8 @@ use Zend\Session\Storage\SessionArrayStorage;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
 
+echo '<a href="utility_session_storage_examples.php">BACK</a><br />' . PHP_EOL;
+
 echo '<pre>';
 echo 'ArrayStorage -----------------------------' . PHP_EOL;
 $manager1 = new SessionManager();
@@ -40,13 +42,3 @@ echo 'Comes from default storage: ' . $container4->test . PHP_EOL;
 echo '$_SESSION ---------------------------------' . PHP_EOL;
 var_dump($_SESSION);
 echo '</pre>';
-?>
-<!DOCTYPE html>
-<head>
-	<title>ZF2C</title>
-	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-</head>
-<body>
-<a href="utility_session_storage_examples.php">BACK</a>
-</body>
-</html>
