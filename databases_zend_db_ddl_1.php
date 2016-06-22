@@ -1,4 +1,5 @@
 <?php
+// NOTE: works thanks to Andrew C.
 
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
