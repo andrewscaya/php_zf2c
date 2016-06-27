@@ -1,5 +1,4 @@
 <?php
-
 // TODO: test this!!! see wuzzup
 
 // No need to do session_start(): this is done by
@@ -12,6 +11,8 @@ use Zend\Session\Storage\SessionStorage;
 use Zend\Session\Storage\SessionArrayStorage;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
+
+echo '<a href="utility_session_storage_examples_2.php">Run Test</a><br />' . PHP_EOL;
 
 echo '<pre>';
 echo 'ArrayStorage -----------------------------' . PHP_EOL;
@@ -40,13 +41,3 @@ $container4->test = 'TEST4';
 echo '$_SESSION --------------------------------' . PHP_EOL;
 var_dump($_SESSION);
 echo '</pre>';
-?>
-<!DOCTYPE html>
-<head>
-	<title>ZF2C</title>
-	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-</head>
-<body>
-<a href="utility_session_storage_examples_2.php">Run Test</a>
-</body>
-</html>
