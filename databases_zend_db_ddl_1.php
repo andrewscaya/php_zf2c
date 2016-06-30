@@ -89,6 +89,8 @@ if (!empty($newColumns)) {
     }
 
     $execute($tableDdl, $sql, $adapter);
+    
+    echo PHP_EOL . '<br /><a href="">Please reload the page in order to reset the database!</a><br />';
 
 } else {
 
