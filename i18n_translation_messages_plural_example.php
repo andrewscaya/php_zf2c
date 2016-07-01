@@ -18,6 +18,16 @@ return [
     'house_plural'  => 'maisons',
     'housestr'      => ['maison', 'maisons'],
 ];
+
+return [
+    ''              => [
+        'plural_forms'  => 'nplurals=2; plural=(n != 1);',
+    ],
+    'Welcome'       => 'Willkommen',
+    'house'         => 'haus',
+    'house_plural'  => 'häuser',
+    'housestr'      => ['haus', 'häuser'],
+];
 */
 
 use Zend\I18n\Translator\Translator;
@@ -30,7 +40,15 @@ $type       = 'phparray';
 $pattern    = 'locale/%s/messages.php';
 $textDomain = 'mystrings';
 
-$translator->setLocale('fr');
+if (isset($_GET['lang']) && $_GET['lang'] == 'de') {
+	$translator->setLocale('de');
+	$language = 'German';
+} else {
+	$translator->setLocale('fr');
+	$language = 'French';
+	echo '<br /><a href="?p=i18n_translation_messages_plural_example.php&lang=de">German translations</a><br /><br /><br />';
+}
+
 $translator->setEventManager($evm);
 $translator->enableEventManager();
 $translator->addTranslationFilePattern($type, __DIR__, $pattern, $textDomain);
@@ -41,29 +59,29 @@ $listenerNotLoaded = function ($e) { echo "Messages Not Loaded\n"; };
 $evm->attach(Translator::EVENT_MISSING_TRANSLATION, $listenerMissing);
 $evm->attach(Translator::EVENT_NO_MESSAGES_LOADED,  $listenerNotLoaded);
 
-echo $translator->translate('Welcome', 'mystrings') . "!\n\n"; // Bienvenue!
+echo $translator->translate('Welcome', 'mystrings') . "!<br /><br />"; // Bienvenue!, Willkommen!
 
 printf(
-    "'house' in french: " . $translator->translate('house', 'mystrings') . "\n\n" // maison
+    "'house' in $language: " . $translator->translate('house', 'mystrings') . "<br /><br />" // maison
 );
 
-// translate a message - singular in french
+// translate a message - singular in French, plural in German
 $num = 0;
 printf(
-    "%d " . $translator->translatePlural('housestr', 'house_plural', $num, 'mystrings') . "\n\n", // 0 maison
+    "%d " . $translator->translatePlural('housestr', 'house_plural', $num, 'mystrings') . "<br /><br />", // 0 maison, 0 häuser
     $num
 );
 
 // translate a message - singular
 $num = 1;
 printf(
-    "%d " . $translator->translatePlural('housestr', 'house_plural', $num, 'mystrings') . "\n\n", // 1 maison
+    "%d " . $translator->translatePlural('housestr', 'house_plural', $num, 'mystrings') . "<br /><br />", // 1 maison, 1 haus
     $num
 );
 
 // translate a message - plural
 $num = 3;
 printf(
-    "%d " . $translator->translatePlural('housestr', 'house_plural', $num, 'mystrings') . "\n\n", // 3 maisons
+    "%d " . $translator->translatePlural('housestr', 'house_plural', $num, 'mystrings') . "<br /><br />", // 3 maisons, 3 häuser
     $num
 );
