@@ -3,7 +3,7 @@
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\AbstractSql;
 use Zend\Db\Sql\Sql;
-use Zend\Db\Adapter\Driver\Pdo\Result;
+use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Debug\Debug;
 
@@ -16,7 +16,7 @@ $execute = function (AbstractSql $tableDdl, Sql $sql, Adapter $adapter) {
         Adapter::QUERY_MODE_EXECUTE);
 };
 
-function getStructuresToBeCreated(Array $needle, Result $haystack)
+function getStructuresToBeCreated(Array $needle, ResultInterface $haystack)
 {
     $haystack = ArrayUtils::iteratorToArray($haystack);
 

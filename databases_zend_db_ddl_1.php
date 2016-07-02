@@ -4,7 +4,6 @@
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
-use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Ddl\CreateTable;
 use Zend\Db\Sql\Ddl\Column\Integer;
 use Zend\Db\Sql\Ddl\Constraint\ForeignKey;
@@ -12,6 +11,8 @@ use Zend\Db\Sql\Ddl\Column\Varchar;
 use Zend\Db\Sql\Ddl\AlterTable;
 use Zend\Db\Sql\Ddl\DropTable;
 use Zend\Db\Sql\Ddl\Constraint\PrimaryKey;
+use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Metadata\Metadata;
 use Zend\Debug\Debug;
 
 include 'init_autoloader.php';
@@ -29,24 +30,18 @@ $select->where(new Zend\Db\Sql\Predicate\In('tablename.foo', [1, 2]));
 echo PHP_EOL . '<br />' . $sql->getSqlStringForSqlObject($select, $adapter->getPlatform()) . '<br />' . PHP_EOL;
 
 // check if tables exist and, if not, create them
-$tableTmptype = new TableGateway($tableNames[0], $adapter);
+$metadata = new Metadata($adapter);
 
-$sqlString = 'SHOW TABLES';
-$result = $tableTmptype->getAdapter()->query($sqlString)->execute();
-
-$newTables = getStructuresToBeCreated($tableNames, $result);
-
-if (!empty($newTables)) {
-
-    foreach ($newTables as $table) {
-
-        $tableDdl = new CreateTable($table, false);
-        $tableDdl->addColumn(new Integer('id'));
-        $tableDdl->addConstraint(new PrimaryKey('id'));
-        $execute($tableDdl, $sql, $adapter);
-
-    }
-
+foreach ($tableNames as $table) {
+	try {
+		$table = $metadata->getTable($table);
+	}
+	catch (Exception $e) {
+		$tableDdl = new CreateTable($table, false);
+		$tableDdl->addColumn(new Integer('id'));
+		$tableDdl->addConstraint(new PrimaryKey('id'));
+		$execute($tableDdl, $sql, $adapter);
+	}
 }
 
 // check if columns already exist in the products table
@@ -89,6 +84,8 @@ if (!empty($newColumns)) {
     }
 
     $execute($tableDdl, $sql, $adapter);
+    
+    echo PHP_EOL . '<br /><a href="">Please reload the page in order to reset the database!</a><br />';
 
 } else {
 
