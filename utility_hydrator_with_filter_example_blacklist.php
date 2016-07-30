@@ -18,13 +18,14 @@ include 'init_autoloader.php';
 
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\Stdlib\Hydrator\Filter\FilterComposite;
+use Zend\Stdlib\Hydrator\Filter\MethodMatchFilter;
 
 $hydrator = new ClassMethods(false);
 
 // MethodMatchFilter will blacklist by default
 $hydrator->addFilter(
     'getfiltered',
-    new Hydrator\Filter\MethodMatchFilter('getFiltered'),
+    new MethodMatchFilter('getFiltered'),
     FilterComposite::CONDITION_AND
 );
 
