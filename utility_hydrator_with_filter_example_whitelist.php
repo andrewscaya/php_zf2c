@@ -5,7 +5,7 @@ class Test
 {
     protected $filtered = 'FILTERED';
     protected $testOne  = 'TEST1';
-    protected $testTwo  = 'TEST1';
+    protected $testTwo  = 'TEST2';
 
     public function getFiltered() { return $this->filtered; }
     public function getTestOne()  { return $this->testOne;  }
