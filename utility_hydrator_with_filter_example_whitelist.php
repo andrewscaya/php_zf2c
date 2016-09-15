@@ -1,11 +1,11 @@
 <?php
-// NOTE: doesn't work!!!!
+// NOTE: works thanks to Kevin G.
 
 class Test
 {
     protected $filtered = 'FILTERED';
     protected $testOne  = 'TEST1';
-    protected $testTwo  = 'TEST1';
+    protected $testTwo  = 'TEST2';
 
     public function getFiltered() { return $this->filtered; }
     public function getTestOne()  { return $this->testOne;  }
@@ -17,11 +17,13 @@ class Test
 
 include 'init_autoloader.php';
 
-use Zend\Stdlib\Hydrator;
+use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Stdlib\Hydrator\Filter\FilterComposite;
+use Zend\Stdlib\Hydrator\Filter\MethodMatchFilter;
 
-$hydrator = new Hydrator\ClassMethods();
-$hydrator->addFilter('test', new Hydrator\Filter\MethodMatchFilter('getTest*', FALSE), 0);
-//$hydrator->addFilter('test', new Hydrator\Filter\GetFilter());
+$hydrator = new ClassMethods();
+$hydrator->addFilter('test', new MethodMatchFilter('getFiltered', TRUE), FilterComposite::CONDITION_OR);
+$hydrator->removeFilter('get');
 
 $result = $hydrator->extract(new Test());
 print_r($result);

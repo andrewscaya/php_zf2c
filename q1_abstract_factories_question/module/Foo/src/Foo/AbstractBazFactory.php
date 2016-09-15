@@ -6,13 +6,15 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AbstractBazFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name,  
+    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name,
         $requestedName)
     {
-        return TRUE;
+        if ($name === 'FooBaz') {
+            return TRUE;
+        }
     }
-    
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, 
+
+    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name,
         $requestedName)
     {
         return new \stdClass();

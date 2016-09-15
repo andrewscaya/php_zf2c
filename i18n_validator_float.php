@@ -1,7 +1,7 @@
 <?php
 include 'init_autoloader.php';
 
-$validator = new Zend\I18n\Validator\Float();
+$validator = new Zend\I18n\Validator\IsFloat();
 
 $validator->setLocale('en_US');
 

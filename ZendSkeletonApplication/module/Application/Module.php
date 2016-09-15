@@ -36,4 +36,19 @@ class Module
             ),
         );
     }
+
+    // new controller via factory as anonymous function
+    public function getControllerConfig()
+    {
+        return [
+            'factories' => [
+                'application-controller-whatever' => function ($serviceLocator) {
+                    $controller = new \Application\Controller\WhateverController();
+                    $controller->setWhatever($serviceLocator->getServiceLocator()->get('application-whatever'));
+                    return $controller;
+                },
+            ],
+        ];
+    }
+
 }

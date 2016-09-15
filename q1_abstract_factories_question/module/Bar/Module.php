@@ -1,8 +1,9 @@
 <?php
-namespace Foo;
+namespace Bar;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Foo\AbstractBazFactory;
 
 class Module
 {
@@ -30,7 +31,7 @@ class Module
         return array(
             'service_manager' => array(
                 'abstract_factories' => array(
-                    'foo' => AbstractFooBarFactory::class,
+                    'bar' => AbstractFooBarFactory::class,
                 ),
             )
         );
@@ -50,7 +51,7 @@ class Module
         //    ),
         //);
 
-        // let's assume this, WITH its fully qualified class name:
+        // let's assume this, with its fully qualified class name:
 
         return array(
             'abstract_factories' => array(

@@ -17,15 +17,15 @@
  */
 
 // Composer autoloading
-if (file_exists('vendor/autoload.php')) {
-    $loader = include 'vendor/autoload.php';
-}
+//if (file_exists('vendor/autoload.php')) {
+//    $loader = include 'vendor/autoload.php';
+//}
 
-if (class_exists('Zend\Loader\AutoloaderFactory')) {
-    return;
-}
+//if (class_exists('Zend\Loader\AutoloaderFactory')) {
+//    return;
+//}
 
-$zf2Path = false;
+$zf2Path = __DIR__ . '/vendor/zendframework/library';
 
 if (is_dir('vendor/ZF2/library')) {
     $zf2Path = 'vendor/ZF2/library';

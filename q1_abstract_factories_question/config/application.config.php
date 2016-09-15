@@ -1,17 +1,10 @@
 <?php
-/**
- * If you need an environment-specific system or application configuration,
- * there is an example in the documentation
- * @see http://framework.zend.com/manual/current/en/tutorials/config.advanced.html#environment-specific-system-configuration
- * @see http://framework.zend.com/manual/current/en/tutorials/config.advanced.html#environment-specific-application-configuration
- */
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
         'Application',
         'Foo',
-        //'Bar',
-        'ZendDeveloperTools',
+        'Bar',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
@@ -29,7 +22,7 @@ return array(
         // modules are loaded. These effectively override configuration
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
         'config_glob_paths' => array(
-            'config/autoload/{{,*.}global,{,*.}local}.php',
+            'config/autoload/{,*.}{global,local}.php',
         ),
 
         // Whether or not to enable a configuration cache.
@@ -65,7 +58,7 @@ return array(
     //         'interface'       => $stringOptionalInterface,
     //         'method'          => $stringRequiredMethodName,
     //     ),
-    // ),
+    // )
 
    // Initial configuration with which to seed the ServiceManager.
    // Should be compatible with Zend\ServiceManager\Config.

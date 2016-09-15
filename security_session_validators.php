@@ -9,13 +9,24 @@ $manager = new SessionManager();
 
 $manager->start();
 
-$manager->getValidatorChain()->attach('session.validate',array(new HttpUserAgent(), 'isValid'));
-$manager->getValidatorChain()->attach('session.validate',array(new RemoteAddr(), 'isValid'));
+if (!isset($_GET['token']) || $_GET['token'] != '12345') {
+    
+    $manager->getValidatorChain()->attach('session.validate', [new HttpUserAgent(), 'isValid']);
+    $manager->getValidatorChain()->attach('session.validate', [new RemoteAddr(), 'isValid']);
 
-if ($manager->isValid()) {
-	echo 'Session is NOT valid';
+    $link = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'] . '&token=12345';
+    echo '<a href="'. $link .'">*** CHANGE BROWSER ID ***</a><br />' . PHP_EOL;
+
 } else {
-	echo 'Session is valid';
+    
+    $manager->getValidatorChain()->attach('session.validate', [new HttpUserAgent('Some browser'), 'isValid']);
+    
+}
+
+if (!$manager->isValid()) {
+    echo 'Session is NOT valid<br />' . PHP_EOL;
+} else {
+    echo 'Session is valid<br />' . PHP_EOL;
 }
 
 phpinfo(INFO_VARIABLES);

@@ -9,14 +9,16 @@ use Zend\Db\Adapter\Adapter;
 
 class AbstractTableGatewayFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name,  
+    public function canCreateServiceWithName(
+        ServiceLocatorInterface $serviceLocator,
+        $name,
         $requestedName)
     {
         // does this classname end with Table?
         return fnmatch('*Table', $requestedName);
     }
-    
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, 
+
+    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name,
         $requestedName)
     {
         $adapter = $serviceLocator->get('db-adapter');

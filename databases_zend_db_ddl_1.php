@@ -1,46 +1,107 @@
 <?php
+// NOTE: works thanks to Andrew C.
+
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Ddl\CreateTable;
 use Zend\Db\Sql\Ddl\Column\Integer;
 use Zend\Db\Sql\Ddl\Constraint\ForeignKey;
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Ddl\Column\Varchar;
-use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Ddl\AlterTable;
+use Zend\Db\Sql\Ddl\DropTable;
+use Zend\Db\Sql\Ddl\Constraint\PrimaryKey;
+use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Metadata\Metadata;
+use Zend\Debug\Debug;
+
 include 'init_autoloader.php';
+require 'lib' . DIRECTORY_SEPARATOR . 'databases_zend_db_ddl_1_include.php';
+
+$tableNames = ['tmptype', 'products'];
+$columnNames = ['id', 'name', 'tmptype_id'];
 
 $adapter = new Zend\Db\Adapter\Adapter(include 'database_params.php');
 $sql = new Zend\Db\Sql\Sql($adapter);
-var_dump($adapter->getDriver()->getConnection());
+Debug::dump($adapter->getDriver()->getConnection());
 
-// $select = $sql->select('tablename');
-// $select->where(new Zend\Db\Sql\Predicate\In('tablename.foo',
-// 		array(1, 2)));
-// echo $sql->getSqlStringForSqlObject($select, $adapter->getPlatform());
+$select = $sql->select('tablename');
+$select->where(new Zend\Db\Sql\Predicate\In('tablename.foo', [1, 2]));
+echo PHP_EOL . '<br />' . $sql->getSqlStringForSqlObject($select, $adapter->getPlatform()) . '<br />' . PHP_EOL;
 
+// check if tables exist and, if not, create them
+$metadata = new Metadata($adapter);
 
-// check if table exists
-$tableGateway = new TableGateway('products', $adapter);
-if (!$tableGateway) {
-	$tableDdl = new CreateTable('products', false);
-} else {
-	$tableDdl = new AlterTable('products', false);
-	echo 'table exists';
+foreach ($tableNames as $table) {
+	try {
+		$table = $metadata->getTable($table);
+	}
+	catch (Exception $e) {
+		$tableDdl = new CreateTable($table, false);
+		$tableDdl->addColumn(new Integer('id'));
+		$tableDdl->addConstraint(new PrimaryKey('id'));
+		$execute($tableDdl, $sql, $adapter);
+	}
 }
-$tableDdl->addColumn(new Integer('id'));
-$tableDdl->addColumn(new Integer('sku'));
-$tableDdl->addColumn(new Varchar('name', 255));
-$tableDdl->addColumn(new Integer('type_id'));
-// must create table 'type' first
-// $tableDdl->addConstraint(new ForeignKey('fk-type_id',
-// 							 'type_id',
-// 							 'type',
-// 							 'id'));
 
-var_dump($sql->getSqlStringForSqlObject($tableDdl));
+// check if columns already exist in the products table
+$tableProjects = new TableGateway($tableNames[1], $adapter);
+$sqlString = 'SHOW COLUMNS FROM ' . $tableProjects->getTable();
+$result = $tableProjects->getAdapter()->query($sqlString)->execute();
 
-$adapter->query($sql->getSqlStringForSqlObject($tableDdl),
-		Adapter::QUERY_MODE_EXECUTE);
+$newColumns = getStructuresToBeCreated($columnNames, $result);
 
+if (!empty($newColumns)) {
+
+    $tableDdl = new AlterTable($tableNames[1], false);
+
+    foreach ($newColumns as $column) {
+
+        echo PHP_EOL . "<br />Column $column will be created!<br />" . PHP_EOL;
+
+        switch($column) {
+            case "{$columnNames[0]}":
+                $tableDdl->addColumn(new Integer($columnNames[0]));
+                break;
+            case "{$columnNames[1]}":
+                $tableDdl->addColumn(new Varchar($columnNames[1], 255));
+                break;
+            case "{$columnNames[2]}":
+                $tableDdl->addColumn(new Integer($columnNames[2]));
+                break;
+        }
+
+    }
+
+    if (count($newColumns) === 3) {
+
+        // table tmptype must exist before creating the constraint
+        $tableDdl->addConstraint(new ForeignKey('fktmptype_id',
+            'tmptype_id',
+            'tmptype',
+            'id'));
+
+    }
+
+    $execute($tableDdl, $sql, $adapter);
+    
+    echo PHP_EOL . '<br /><a href="">Please reload the page in order to reset the database!</a><br />';
+
+} else {
+
+    $tableDdl = new DropTable($tableNames[0]);
+    $execute($tableDdl, $sql, $adapter);
+
+    $tableDdl = new AlterTable($tableNames[1], false);
+
+    foreach ($columnNames as $column) {
+        $tableDdl->dropColumn($column);
+    }
+
+    $execute($tableDdl, $sql, $adapter);
+
+    echo PHP_EOL . '<br />The database was reset. <a href="">Please reload the page!</a><br />';
+
+}
 
 echo PHP_EOL;
-
