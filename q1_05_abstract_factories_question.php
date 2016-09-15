@@ -5,7 +5,9 @@
 
 include 'init_autoloader.php';
 
-class NewConfig extends Zend\ModuleManager\Listener\ConfigListener
+use Zend\ModuleManager\Listener\ConfigListener;
+
+class NewConfig extends ConfigListener
 {
 	public $configs = array();
 	public $paths   = array();
