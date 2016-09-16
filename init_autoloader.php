@@ -25,7 +25,7 @@
 //    return;
 //}
 
-$zf2Path = __DIR__ . '/vendor/zendframework/library';
+$zf2Path = __DIR__ . '/vendor/zendframework/zendframework/library';
 
 if (is_dir('vendor/ZF2/library')) {
     $zf2Path = 'vendor/ZF2/library';

@@ -6,6 +6,7 @@ use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\Config;
 use Zend\Db\Adapter\Adapter;
+use Zend\Db\TableGateway\TableGateway;
 
 class AbstractTableGatewayFactory implements AbstractFactoryInterface
 {
@@ -33,7 +34,7 @@ $config = new Config(array(
     'factories' => array(
         'db-adapter' => function($sm) { return new Adapter($sm->get('db')); },
     ),
-    'service' => array(
+    'services' => array(
         'db' => array(
             'driver' => 'pdo',
             'dsn' => 'mysql:hostname=localhost;dbname=zend',
