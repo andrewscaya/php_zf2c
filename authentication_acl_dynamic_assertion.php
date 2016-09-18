@@ -17,9 +17,9 @@ class DateTimeAssertion implements AssertionInterface
         $this->stopTime = $stop;
     }
 
-    public function assert(Acl $acl, 
-                           RoleInterface $role = null, 
-                           ResourceInterface $resource = null, 
+    public function assert(Acl $acl,
+                           RoleInterface $role = null,
+                           ResourceInterface $resource = null,
                            $privilege = null)
     {
         $now   = new DateTime('now');
@@ -46,5 +46,5 @@ $acl->allow('user', 'z', 'access', $dtAssertion);
 echo ($acl->isAllowed('user','z','access')) ? 'ALLOWED' : 'DENIED';
 
 // returns TRUE only if $dtAssertion returns TRUE
-// $dtAssertion returns TRUE if current time is 
+// $dtAssertion returns TRUE if current time is
 // between $start and $stop
