@@ -1,9 +1,4 @@
 <?php
-// Q: Assuming a valid PDO connection, what class is echoed?
-// A: (A) Zend\Db\ResultSet\ResultSet
-//    (B) ArrayObject
-//    (C) Zend\Db\Adapter\Driver\Pdo\Statement
-//    (D) Zend\Db\RowGateway\RowGateway
 
 include 'init_autoloader.php';
 include __DIR__ . '/Products.php';
