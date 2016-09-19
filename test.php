@@ -1,17 +1,14 @@
 <?php
-// what is the output from this code?
+// Q: Assuming a valid PDO connection, what class is returned?
+// A: (A) Zend\Db\ResultSet\ResultSet
+//    (B) ArrayObject
+//    (C) Zend\Db\Adapter\Driver\Pdo\Statement
+//    (D) None of the above
 
 include 'init_autoloader.php';
 
-include 'init_autoloader.php';
-// shared manager
-$sem = new Zend\EventManager\SharedEventManager();
-$sem->attach('*', 'someEvent', function() { echo "1";});
-$sem->attach('Id', 'someEvent', function() { echo "2";});
-$sem->attach('*', 'someEvent', function() { echo "3";});
-$sem->attach('*', 'someEvent', function() { echo "4";}, 3);
-$sem->attach('Id', 'someEvent', function() { echo "5";}, 2);
-// a generic event manager instance
-$evm1 = new Zend\EventManager\EventManager('Id');
-$evm1->setSharedManager($sem);
-$evm1->trigger('someEvent');
+$adapter = new Zend\Db\Adapter\Adapter(include 'database_params.php');
+$return  = $adapter->query('SELECT * FROM products WHERE sku = ?', ['16751']);
+foreach ($return as $item) {
+	var_dump($item);
+}

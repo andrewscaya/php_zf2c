@@ -11,7 +11,12 @@ $adapter = new Zend\Db\Adapter\Adapter(include 'database_params.php');
 $feature = new Zend\Db\TableGateway\Feature\RowGatewayFeature('sku');
 $table   = new Zend\Db\TableGateway\TableGateway('products', $adapter, $feature);
 $return  = $table->select(['sku' => '16751']);
-foreach ($return as $result) Zend\Debug\Debug::dump($result);
+foreach ($return as $result) {
+	Zend\Debug\Debug::dump($result);
+	echo PHP_EOL;
+	echo get_class($result);
+	echo PHP_EOL;
+}
 $result->qty_oh = rand(1,999);
 $result->save();
 echo PHP_EOL;
