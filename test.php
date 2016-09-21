@@ -1,14 +1,8 @@
 <?php
-// Q: Assuming a valid PDO connection, what class is returned?
-// A: (A) Zend\Db\ResultSet\ResultSet
-//    (B) ArrayObject
-//    (C) Zend\Db\Adapter\Driver\Pdo\Statement
-//    (D) None of the above
+$data = [[ 'name' => 'test1', 'balance' => 999.99],
+         [ 'name' => 'test2', 'balance' => 888.88],
+         [ 'name' => 'test3', 'balance' => 777.77]
+         ];
+header('Content-Type: application/json');
+echo json_encode($data);
 
-include 'init_autoloader.php';
-
-$adapter = new Zend\Db\Adapter\Adapter(include 'database_params.php');
-$return  = $adapter->query('SELECT * FROM products WHERE sku = ?', ['16751']);
-foreach ($return as $item) {
-	var_dump($item);
-}
