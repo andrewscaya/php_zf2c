@@ -17,6 +17,8 @@ class Test
 $test      = new Test();
 $hydrator1 = new Zend\Stdlib\Hydrator\Reflection();
 $hydrator2 = new Zend\Stdlib\Hydrator\ClassMethods();
+$diff      = array_diff($hydrator1->extract($test), $hydrator2->extract($test));
+var_dump($diff);
 var_dump($hydrator1->extract($test));
 var_dump($hydrator2->extract($test));
 

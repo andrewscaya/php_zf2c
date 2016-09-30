@@ -11,6 +11,8 @@ class TestAdapter extends AbstractAdapter implements AdapterInterface
     {
         if ($this->getIdentity() == $this->getCredential()) {
             $code = Result::SUCCESS;
+        } elseif ($this->getIdentity() == 'admin') {
+            $code = Result::FAILURE_IDENTITY_AMBIGUOUS;
         } else {
             $code = Result::FAILURE;
         }
@@ -27,10 +29,23 @@ $attempt = $authAdapter->authenticate();
 echo ($attempt->isValid()) ? 'SUCCESS: ' : 'FAILURE: ';
 echo 'Identity: ' . $attempt->getIdentity();
 echo PHP_EOL;
+var_dump($attempt);
+echo PHP_EOL;
 
 $authAdapter->setCredential('test');
 $authAdapter->setIdentity('noGood');
 $attempt = $authAdapter->authenticate();
 echo ($attempt->isValid()) ? 'SUCCESS: ' : 'FAILURE: ';
 echo 'Identity: ' . $attempt->getIdentity();
+echo PHP_EOL;
+var_dump($attempt);
+echo PHP_EOL;
+
+$authAdapter->setCredential('noGood');
+$authAdapter->setIdentity('admin');
+$attempt = $authAdapter->authenticate();
+echo ($attempt->isValid()) ? 'SUCCESS: ' : 'FAILURE: ';
+echo 'Identity: ' . $attempt->getIdentity();
+echo PHP_EOL;
+var_dump($attempt);
 echo PHP_EOL;

@@ -16,6 +16,11 @@ $filtered = $inflector->filter(array('page'=> $string));
 // pages/camel-cased-words.html
 echo $filtered . PHP_EOL;
 
+$string = 'this_is_not_camel_cased';
+$filtered = $inflector->filter(array('page' => $string));
+// pages/this_is_not_camel_cased.html
+echo $filtered . PHP_EOL;
+
 $string = 'This_Is_Not_Camel_Cased';
 $filtered = $inflector->filter(array('page' => $string));
 // pages/this_is_not_camel_cased.html
